@@ -1,6 +1,9 @@
+import 'package:dart_jwt/impl/basic_header.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../impl.dart';
 import '../interfaces/decoded_jwt.dart';
+import '../interfaces/header.dart';
+import '../interfaces/payload.dart';
 
 //part 'jwt_decoder.g.dart';
 
@@ -11,10 +14,17 @@ import '../interfaces/decoded_jwt.dart';
 @JsonSerializable()
 class JWTDecoder implements DecodedJWT
 {
+
+  final Header _header;
+
+  final Payload _payload;
+
   JWTDecoder(String jwt)
     : this.withParser(JWTParser(), jwt);
 
   JWTDecoder.withParser(JWTParser parser, String jwt) {
+    _header = BasicHeader.empty;
+    _payload = BasicPayload.empty;
     throw UnimplementedError();
   }
 
@@ -33,7 +43,7 @@ class JWTDecoder implements DecodedJWT
   }
 
   @override
-  String getSubject() {
+  String get subject {
     // TODO: implement getSubject
     throw UnimplementedError();
   }

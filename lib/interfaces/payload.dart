@@ -5,5 +5,5 @@ import 'package:dart_jwt/null_safety_object.dart';
 abstract class Payload implements NullSafetyObject {
 
   /// Get the value of the "sub" claim, or empty if it's not available.
-  String getSubject();
+  String get subject;
 }

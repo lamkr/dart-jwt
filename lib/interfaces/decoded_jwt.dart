@@ -17,9 +17,7 @@ abstract class DecodedJWT implements Payload, Header, NullSafetyObject
   const DecodedJWT();
 
   @override
-  String getSubject() {
-    return '';
-  }
+  String get subject => throw UnimplementedError();
 }
 
 class _EmptyDecodedJWT extends DecodedJWT {
@@ -28,4 +26,21 @@ class _EmptyDecodedJWT extends DecodedJWT {
 
   @override
   bool get isEmpty => true;
+
+  @override
+  String get algorithm => throw UnimplementedError();
+
+  @override
+  String get contentType => throw UnimplementedError();
+
+  @override
+  dynamic headerClaim(String name) {
+    throw UnimplementedError();
+  }
+
+  @override
+  String get keyId => throw UnimplementedError();
+
+  @override
+  String get type => throw UnimplementedError();
 }
