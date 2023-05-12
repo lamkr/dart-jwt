@@ -1,3 +1,4 @@
+import 'package:dart_jwt/impl/basic_header.dart';
 import 'package:dart_jwt/interfaces/header.dart';
 
 import '../interfaces/header_deserializer.dart';
@@ -7,7 +8,6 @@ class BasicHeaderDeserializer implements HeaderDeserializer {
 
   @override
   Header deserialize(String json) {
-    // TODO: implement deserialize
-    throw UnimplementedError();
+    return BasicHeader.fromJson(json);
   }
 }
