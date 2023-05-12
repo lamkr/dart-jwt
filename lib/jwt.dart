@@ -1,7 +1,4 @@
-import 'interfaces/decoded_jwt.dart';
+library dart_jwt;
 
-class JWT {
-  static DecodedJWT decode(String token) {
-    return DecodedJWT.empty;
-  }
-}
+export 'jwt/jwt_class.dart';
+export 'jwt/jwt_decoder.dart';
