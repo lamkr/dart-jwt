@@ -6,41 +6,18 @@ import 'payload.dart';
 /// from it's string representation.
 abstract class DecodedJWT implements Payload, Header, NullSafetyObject
 {
-  static const DecodedJWT empty = _EmptyDecodedJWT();
+  /// Getter for the String Token used to create this JWT instance.
+  String get token;
 
-  @override
-  bool get isEmpty => false;
+  /// Getter for the Header contained in the JWT as a Base64 encoded String.
+  /// This represents the first part of the token.
+  String get header;
 
-  @override
-  bool get isNotEmpty => !isEmpty;
+  /// Getter for the Payload contained in the JWT as a Base64 encoded String.
+  /// This represents the second part of the token.
+  String get payload;
 
-  const DecodedJWT();
-
-  @override
-  String get subject => throw UnimplementedError();
-}
-
-class _EmptyDecodedJWT extends DecodedJWT {
-
-  const _EmptyDecodedJWT() : super();
-
-  @override
-  bool get isEmpty => true;
-
-  @override
-  String get algorithm => throw UnimplementedError();
-
-  @override
-  String get contentType => throw UnimplementedError();
-
-  @override
-  dynamic headerClaim(String name) {
-    throw UnimplementedError();
-  }
-
-  @override
-  String get keyId => throw UnimplementedError();
-
-  @override
-  String get type => throw UnimplementedError();
+  /// Getter for the Signature contained in the JWT as a Base64 encoded String.
+  /// This represents the third part of the token.
+  String get signature;
 }
