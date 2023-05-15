@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../impl.dart';
 import '../interfaces/decoded_jwt.dart';
@@ -24,10 +25,21 @@ class JWTDecoder implements DecodedJWT
 
   JWTDecoder(String jwt, {JWTPartsParser parser=const JWTParser()}) {
     _parts = TokenUtils.splitToken(jwt);
-    final headerBytes = base64.decode(_parts[0]);
-    final headerJson = String.fromCharCodes(headerBytes);
-    final payloadBytes = base64.decode(_parts[1]);
-    final payloadJson = String.fromCharCodes(payloadBytes);
+    late final Uint8List headerBytes;
+    late final String headerJson;
+    late final Uint8List payloadBytes;
+    late final String payloadJson;
+    try {
+      headerBytes = base64.decode(_parts[0]);
+      headerJson = String.fromCharCodes(headerBytes);
+      payloadBytes = base64.decode(_parts[1]);
+      payloadJson = String.fromCharCodes(payloadBytes);
+    }
+    catch(e) {
+      throw JWTDecodeException(
+          "The input is not a valid base 64 encoded string.",
+          e as Exception?);
+    }
     _header = parser.parseHeader(headerJson);
     _payload = parser.parsePayload(payloadJson);
   }

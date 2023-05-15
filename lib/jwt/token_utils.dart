@@ -20,7 +20,8 @@ abstract class TokenUtils
         return parts;
     }
 
-    static JWTDecodeException _wrongNumberOfParts(Object partCount) {
-        return JWTDecodeException('The token was expected to have 3 parts, but got $partCount');
+    static JWTDecodeException _wrongNumberOfParts(int partCount) {
+        return JWTDecodeException(
+            "The token was expected to have 3 parts, but got ${partCount > 3 ? "> 3" : partCount}.");
     }
 }

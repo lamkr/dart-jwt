@@ -4,5 +4,6 @@ import 'jwt_verification_exception.dart';
 /// of the token contained an invalid JWT or JSON format.
 class JWTDecodeException extends JWTVerificationException {
 
-  JWTDecodeException(String message) : super(message);
+  JWTDecodeException(String message, [Exception? cause] )
+      : super(message, cause);
 }

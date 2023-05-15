@@ -46,6 +46,6 @@ class JWTParser implements JWTPartsParser {
 
   static JWTDecodeException _decodeException(String json) {
     return JWTDecodeException(
-        'The string $json doesn\'t have a valid JSON format.');
+        "The string '$json' doesn't have a valid JSON format.");
   }
 }
