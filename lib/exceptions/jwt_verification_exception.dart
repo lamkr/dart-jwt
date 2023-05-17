@@ -1,10 +1,10 @@
+import 'package:dart_jwt/exceptions/throwable.dart';
+
 /// Parent to all the exception thrown while verifying a JWT.
-class JWTVerificationException implements Exception {
+class JWTVerificationException extends Throwable {
 
-  final Exception? cause;
-  final String message;
-
-  JWTVerificationException(this.message, [this.cause]);
+  JWTVerificationException(dynamic message, [Exception? cause]):
+      super(message, cause);
 
   @override
   String toString() {

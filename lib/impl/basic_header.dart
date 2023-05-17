@@ -1,5 +1,4 @@
 import 'package:dart_jwt/jwt/header_params.dart';
-import 'package:intl/intl.dart';
 
 import '../interfaces/header.dart';
 
@@ -20,10 +19,10 @@ class BasicHeader implements Header {
   );
 
   @override
-  bool get isEmpty => false;
+  bool get isValid => true;
 
   @override
-  bool get isNotEmpty => !isEmpty;
+  bool get isNotValid => !isValid;
 
   @override
   String get algorithm => _algorithm;

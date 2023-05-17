@@ -2,6 +2,7 @@ import 'package:dart_jwt/interfaces.dart';
 
 import '../exceptions/jwt_decode_exception.dart';
 import '../ext/date_time_extension.dart';
+import '../interfaces/claim.dart';
 import '../jwt/registered_claims.dart';
 
 class BasicPayload implements Payload {
@@ -29,25 +30,25 @@ class BasicPayload implements Payload {
     final subject = _getString(json[RegisteredClaims.subject]);
     final issuer = _getString(json[RegisteredClaims.issuer]);
     final audience = _audienceFromJson(json);
-    final expiresAt = jsonToDateTime(json[RegisteredClaims.expiresAt]);
-    final notBefore = jsonToDateTime(json[RegisteredClaims.notBefore]);
-    final issuedAt = jsonToDateTime(json[RegisteredClaims.issuedAt]);
+    final expiresAt = dateTimeFromSeconds(json[RegisteredClaims.expiresAt]);
+    final notBefore = dateTimeFromSeconds(json[RegisteredClaims.notBefore]);
+    final issuedAt = dateTimeFromSeconds(json[RegisteredClaims.issuedAt]);
     final id = _getString(json[RegisteredClaims.jwtId]);
     return BasicPayload(subject, issuer, audience, expiresAt, notBefore,
         issuedAt, id, json);
   }
 
   @override
-  bool get isEmpty => false;
+  bool get isValid => true;
 
   @override
-  bool get isNotEmpty => !isEmpty;
+  bool get isNotValid => !isValid;
 
   @override
   List<String> get audience => _audience;
 
   @override
-  dynamic claim(String name) => _tree[name];
+  Claim claim(String name) => _tree[name];
 
   @override
   Map<String, dynamic> get claims => _tree;
@@ -76,7 +77,7 @@ class BasicPayload implements Payload {
       return <String>[];
     }
     if( audience is List ) {
-      return audience as List<String>;
+      return List.castFrom<dynamic,String>(audience);
     }
     else if( audience is String ) {
       return <String>[audience];
@@ -84,11 +85,11 @@ class BasicPayload implements Payload {
     throw JWTDecodeException("Couldn't map the Claim's array contents to String");
   }
 
-  static String _getString(dynamic json) {
-    if (json == null) {
+  static String _getString(dynamic value) {
+    if (value == null) {
       return '';
     }
-    return json! is String ? json.toString() : json;
+    return value !is String ? value.toString() : value;
   }
 
   Map<String, dynamic> toJson() {

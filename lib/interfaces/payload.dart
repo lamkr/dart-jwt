@@ -1,8 +1,15 @@
+import 'package:dart_jwt/ext/date_time_extension.dart';
 import 'package:dart_jwt/ext/null_safety_object.dart';
+
+import 'claim.dart';
 
 /// The Payload class represents the 2nd part of the JWT,
 /// where the Payload value is held.
 abstract class Payload implements NullSafetyObject {
+
+  static const Payload empty = _EmptyPayload();
+
+  const Payload();
 
   /// Get the value of the "sub" claim (Subject), or empty if it's not available.
   String get subject;
@@ -28,8 +35,46 @@ abstract class Payload implements NullSafetyObject {
   /// Get a Claim given its name. If the Claim wasn't specified in the Payload,
   /// a 'empty claim' will be returned. All the methods of that claim will
   /// return `null`.
-  dynamic /*Claim*/ claim(String name);
+  Claim claim(String name);
 
   /// Get an non-null Map containing the Claims defined in the Token.
   Map<String, dynamic /*Claim*/> get claims;
+}
+
+class _EmptyPayload extends Payload {
+
+  const _EmptyPayload();
+
+  @override
+  bool get isValid => false;
+
+  @override
+  bool get isNotValid => !isValid;
+
+  @override
+  List<String> get audience => [];
+
+  @override
+  Claim claim(String name) => Claim.invalid;
+
+  @override
+  Map<String, dynamic> get claims => {};
+
+  @override
+  DateTime get expiresAt => invalidDateTime;
+
+  @override
+  String get id => '';
+
+  @override
+  DateTime get issuedAt => invalidDateTime;
+
+  @override
+  String get issuer => '';
+
+  @override
+  DateTime get notBefore => invalidDateTime;
+
+  @override
+  String get subject => '';
 }

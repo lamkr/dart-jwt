@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../impl.dart';
+import '../interfaces/claim.dart';
 import '../interfaces/decoded_jwt.dart';
 import '../interfaces/header.dart';
 import '../interfaces/jwt_parts_parser.dart';
@@ -30,25 +31,34 @@ class JWTDecoder implements DecodedJWT
     late final Uint8List payloadBytes;
     late final String payloadJson;
     try {
-      headerBytes = base64.decode(_parts[0]);
+      final normalized = base64.normalize(_parts[0]);
+      headerBytes = base64.decode(normalized);
       headerJson = String.fromCharCodes(headerBytes);
-      payloadBytes = base64.decode(_parts[1]);
-      payloadJson = String.fromCharCodes(payloadBytes);
+      _header = parser.parseHeader(headerJson);
     }
-    catch(e) {
+    on FormatException catch(e)
+    {
       throw JWTDecodeException(
-          "The input is not a valid base 64 encoded string.",
-          e as Exception?);
+          "The input is not a valid base 64 encoded string.", e);
     }
-    _header = parser.parseHeader(headerJson);
-    _payload = parser.parsePayload(payloadJson);
+    try {
+      final normalized = base64.normalize(_parts[1]);
+      payloadBytes = base64.decode(normalized);
+      payloadJson = String.fromCharCodes(payloadBytes);
+      _payload = parser.parsePayload(payloadJson);
+    }
+    on FormatException catch(e)
+    {
+      throw JWTDecodeException(
+          "The input is not a valid base 64 encoded string.", e);
+    }
   }
 
   @override
-  bool get isEmpty => false;
+  bool get isValid => true;
 
   @override
-  bool get isNotEmpty => !isEmpty;
+  bool get isNotValid => !isValid;
 
   @override
   String get algorithm => _header.algorithm;
@@ -70,7 +80,7 @@ class JWTDecoder implements DecodedJWT
   List<String> get audience => _payload.audience;
 
   @override
-  dynamic claim(String name) => _payload.claim(name);
+  Claim claim(String name) => _payload.claim(name);
 
   @override
   Map<String, dynamic> get claims => _payload.claims;
@@ -118,5 +128,4 @@ class JWTDecoder implements DecodedJWT
     return {};
     //return _$JWTDecoderToJson(this);
   }
-
 }

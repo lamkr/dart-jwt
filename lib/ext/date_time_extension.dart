@@ -9,6 +9,11 @@ extension DateTimeExtension on DateTime {
   }
 }
 
+DateTime dateTimeFromSeconds(dynamic value) =>
+  value == null ?
+  invalidDateTime :
+  DateTime.fromMillisecondsSinceEpoch(value*1000);
+
 DateTime jsonToDateTime(json) {
   if (json == null) {
     return invalidDateTime;

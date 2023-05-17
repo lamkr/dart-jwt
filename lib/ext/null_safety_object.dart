@@ -1,6 +1,6 @@
 abstract class NullSafetyObject
 {
-  bool get isEmpty;
+  bool get isValid;
 
-  bool get isNotEmpty;
+  bool get isNotValid;
 }
