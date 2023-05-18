@@ -18,12 +18,12 @@ abstract class Claim implements NullSafetyObject
   /// Whether this Claim has a null value or not.
   /// If the claim is not present, it will return false hence checking {@link Claim#isMissing} is advised as well
   /// Return whether this Claim has a null value or not.
-  bool isNull();
+  bool get isNull;
 
   /// Can be used to verify whether the Claim is found or not.
   /// This will be true even if the Claim has {@code null} value associated to it.
   /// Return whether this Claim is present or not
-  bool isMissing();
+  bool get isMissing;
 
   /// Get this Claim as a bool.
   /// If the value isn't of type [bool] or it can't be converted to a [bool], {@code null} will be returned.
@@ -58,19 +58,19 @@ abstract class Claim implements NullSafetyObject
   /// If the value isn't an list, {@code null} will be returned.
   /// Throws [JWTDecodeException] if the values inside the list
   /// can't be converted to a class T.
-  List<T> asList<T>();
+  List<T>? asList<T>();
 
   /// Get this Claim as a generic [Map] of values.
   /// Throws [JWTDecodeException] if the value can't be converted
   /// to a Map.
-  Map<String, dynamic> asMap();
+  Map<String, T>? asMap<T>();
 
   /// Get this Claim as a custom type T.
   /// This method will return `null` if [Claim.isMissing()]
   /// or [Claim.isNull()] is true.
   /// Throws [JWTDecodeException] if the value can't be converted
   /// to a class T.
-  T as<T>();
+  T? as<T>();
 }
 
 class _InvalidClaim extends Claim {
@@ -111,7 +111,7 @@ class _InvalidClaim extends Claim {
   }
 
   @override
-  Map<String, dynamic> asMap() {
+  Map<String, V>? asMap<V>() {
     throw InvalidObjectException(runtimeType.toString());
   }
 
@@ -121,12 +121,12 @@ class _InvalidClaim extends Claim {
   }
 
   @override
-  bool isMissing() {
+  bool get isMissing {
     throw InvalidObjectException(runtimeType.toString());
   }
 
   @override
-  bool isNull() {
+  bool get isNull {
     throw InvalidObjectException(runtimeType.toString());
   }
 }

@@ -7,7 +7,7 @@ import 'claim.dart';
 /// where the Payload value is held.
 abstract class Payload implements NullSafetyObject {
 
-  static const Payload empty = _EmptyPayload();
+  static const Payload invalid = _InvalidPayload();
 
   const Payload();
 
@@ -32,18 +32,19 @@ abstract class Payload implements NullSafetyObject {
   /// Get the value of the "jti" claim (JWT ID), or null if it's not available.
   String get id;
 
-  /// Get a Claim given its name. If the Claim wasn't specified in the Payload,
-  /// a 'empty claim' will be returned. All the methods of that claim will
-  /// return `null`.
+  /// Get a [Claim] given its [name].
+  /// If the claim wasn't specified in the [Payload],
+  /// a invalid claim will be returned (see [Claim.invalid]).
+  /// All the methods of that claim will throw [InvalidObjectException].
   Claim claim(String name);
 
-  /// Get an non-null Map containing the Claims defined in the Token.
-  Map<String, dynamic /*Claim*/> get claims;
+  /// Get an non-null [Map] containing the claims defined in the token.
+  Map<String, Claim> get claims;
 }
 
-class _EmptyPayload extends Payload {
+class _InvalidPayload extends Payload {
 
-  const _EmptyPayload();
+  const _InvalidPayload();
 
   @override
   bool get isValid => false;
@@ -58,7 +59,7 @@ class _EmptyPayload extends Payload {
   Claim claim(String name) => Claim.invalid;
 
   @override
-  Map<String, dynamic> get claims => {};
+  Map<String, Claim> get claims => {};
 
   @override
   DateTime get expiresAt => invalidDateTime;

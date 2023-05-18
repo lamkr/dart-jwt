@@ -20,4 +20,7 @@ abstract class DecodedJWT implements Payload, Header, NullSafetyObject
   /// Getter for the Signature contained in the JWT as a Base64 encoded String.
   /// This represents the third part of the token.
   String get signature;
+
+  /// Serialize to json.
+  Map<String, dynamic> toJson();
 }

@@ -1,8 +1,10 @@
 import 'package:dart_jwt/ext/null_safety_object.dart';
 
+import 'claim.dart';
+
 abstract class Header implements NullSafetyObject
 {
-  static const Header empty = _EmptyHeader();
+  static const Header invalid = _InvalidHeader();
 
   const Header();
 
@@ -21,15 +23,16 @@ abstract class Header implements NullSafetyObject
   /// Get the value of the "kid" claim, or empty if it's not available.
   String get keyId;
 
-  /// Get a private claim given it's [name]. If the claim wasn't
-  /// specified in the header, a null claim will be
-  /// returned. All the methods of that claim will return empty.
-  dynamic headerClaim(String name);
+  /// Get a private [Claim] given it's [name].
+  /// If the claim wasn't specified in the [Header],
+  /// a invalid claim will be returned (see [Claim.invalid]).
+  /// All the methods of that claim will throw [InvalidObjectException].
+  Claim headerClaim(String name);
 }
 
-class _EmptyHeader extends Header {
+class _InvalidHeader extends Header {
 
-  const _EmptyHeader();
+  const _InvalidHeader();
 
   @override
   bool get isValid => false;
@@ -44,7 +47,7 @@ class _EmptyHeader extends Header {
   String get contentType => '';
 
   @override
-  dynamic headerClaim(String name) => '';
+  Claim headerClaim(String name) => Claim.invalid;
 
   @override
   String get keyId => '';

@@ -1,3 +1,4 @@
+import 'package:dart_jwt/impl/dynamic_claim.dart';
 import 'package:dart_jwt/interfaces.dart';
 
 import '../exceptions/jwt_decode_exception.dart';
@@ -13,7 +14,7 @@ class BasicPayload implements Payload {
   final DateTime _notBefore;
   final DateTime _issuedAt;
   final String _id;
-  final Map<String, dynamic> _tree;
+  final Map<String, Claim> _tree;
 
   BasicPayload(
     this._subject,
@@ -34,8 +35,14 @@ class BasicPayload implements Payload {
     final notBefore = dateTimeFromSeconds(json[RegisteredClaims.notBefore]);
     final issuedAt = dateTimeFromSeconds(json[RegisteredClaims.issuedAt]);
     final id = _getString(json[RegisteredClaims.jwtId]);
+    final tree = _claimsFromJson(json);
     return BasicPayload(subject, issuer, audience, expiresAt, notBefore,
-        issuedAt, id, json);
+        issuedAt, id, tree);
+  }
+
+  Map<String, dynamic> toJson() {
+    // TODO: implement
+    throw UnimplementedError();
   }
 
   @override
@@ -48,10 +55,15 @@ class BasicPayload implements Payload {
   List<String> get audience => _audience;
 
   @override
-  Claim claim(String name) => _tree[name];
+  Claim claim(String name) {
+    if(!_tree.containsKey(name)) {
+      return DynamicClaim.missing;
+    }
+    return _tree[name] as Claim;
+  }
 
   @override
-  Map<String, dynamic> get claims => _tree;
+  Map<String, Claim> get claims => _tree;
 
   @override
   DateTime get expiresAt => _expiresAt;
@@ -89,11 +101,15 @@ class BasicPayload implements Payload {
     if (value == null) {
       return '';
     }
-    return value !is String ? value.toString() : value;
+    return value is! String ? value.toString() : value;
   }
 
-  Map<String, dynamic> toJson() {
-    // TODO: implement
-    throw UnimplementedError();
+  static Map<String, Claim> _claimsFromJson(Map<String, dynamic> json) {
+    final claims = <String, Claim>{};
+    for(var entry in json.entries) {
+      final claim = DynamicClaim(entry.value);
+      claims[entry.key] = claim;
+    }
+    return claims;
   }
 }

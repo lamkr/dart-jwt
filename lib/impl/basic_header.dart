@@ -1,6 +1,8 @@
 import 'package:dart_jwt/jwt/header_params.dart';
 
+import '../interfaces/claim.dart';
 import '../interfaces/header.dart';
+import 'dynamic_claim.dart';
 
 // Implements the [Header] interface.
 class BasicHeader implements Header {
@@ -8,7 +10,7 @@ class BasicHeader implements Header {
   final String _type;
   final String _contentType;
   final String _keyId;
-  final Map<String, dynamic> _tree;
+  final Map<String, Claim> _tree;
 
   BasicHeader(
     this._algorithm,
@@ -31,7 +33,12 @@ class BasicHeader implements Header {
   String get contentType => _contentType;
 
   @override
-  dynamic headerClaim(String name) => _tree[name];
+  Claim headerClaim(String name) {
+    if( _tree.containsKey(name) ) {
+      return _tree[name] as Claim;
+    }
+    return Claim.invalid;
+  }
 
   @override
   String get keyId => _keyId;
@@ -45,9 +52,10 @@ class BasicHeader implements Header {
     final type = json[HeaderParams.type] ?? '';
     final contentType = json[HeaderParams.contentType] ?? '';
     final keyId = json[HeaderParams.keyId] ?? '';
+    final claims = _claimsFromJson(json);
     //jsonToDateTime(json['dataRecebimento']),
     //Double.tryParse(json['latitudeInicio'], latitudeInvalida),
-    return BasicHeader(algorithm, type, contentType, keyId, json);
+    return BasicHeader(algorithm, type, contentType, keyId, claims);
   }
 
   /// Connect the generated [_$JWTDecoderToJson] function
@@ -57,4 +65,14 @@ class BasicHeader implements Header {
     return {};
     //return _$JWTDecoderToJson(this);
   }
+
+  static Map<String, Claim> _claimsFromJson(Map<String, dynamic> json) {
+    final claims = <String, Claim>{};
+    for(var entry in json.entries) {
+      final claim = DynamicClaim(entry.value);
+      claims[entry.key] = claim;
+    }
+    return claims;
+  }
+
 }

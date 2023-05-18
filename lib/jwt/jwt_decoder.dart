@@ -67,7 +67,7 @@ class JWTDecoder implements DecodedJWT
   String get contentType => _header.contentType;
 
   @override
-  dynamic headerClaim(String name) =>
+  Claim headerClaim(String name) =>
     _header.headerClaim(name);
 
   @override
@@ -83,7 +83,7 @@ class JWTDecoder implements DecodedJWT
   Claim claim(String name) => _payload.claim(name);
 
   @override
-  Map<String, dynamic> get claims => _payload.claims;
+  Map<String, Claim> get claims => _payload.claims;
 
   @override
   DateTime get expiresAt => _payload.expiresAt;
@@ -118,14 +118,15 @@ class JWTDecoder implements DecodedJWT
   factory JWTDecoder.fromJson(Map<String, dynamic> json) {
     //return _$JWTDecoderFromJson(json);
     // TODO: implement
-    return JWTDecoder('');
+    throw UnimplementedError();
   }
 
   /// Connect the generated [_$JWTDecoderToJson] function
   /// to the `toJson` method.
+  @override
   Map<String, dynamic> toJson() {
-    // TODO: implement
-    return {};
     //return _$JWTDecoderToJson(this);
+    // TODO: implement
+    throw UnimplementedError();
   }
 }
