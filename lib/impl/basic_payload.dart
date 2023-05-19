@@ -42,7 +42,40 @@ class BasicPayload implements Payload {
 
   Map<String, dynamic> toJson() {
     // TODO: implement
-    throw UnimplementedError();
+    var json = <String, dynamic>{};
+    if( _subject.isNotEmpty ) {
+      json[RegisteredClaims.subject] = _subject;
+    }
+    if( _issuer.isNotEmpty ) {
+      json[RegisteredClaims.issuer] = _issuer;
+    }
+    if( _audience.isNotEmpty ) {
+      json[RegisteredClaims.audience] = _audience;
+    }
+    if( _expiresAt.isValid ) {
+      json[RegisteredClaims.expiresAt] = _expiresAt.millisecondsSinceEpoch * 1000;
+    }
+    if( _notBefore.isValid ) {
+      json[RegisteredClaims.notBefore] = _notBefore.millisecondsSinceEpoch * 1000;
+    }
+    if( _issuedAt.isValid ) {
+      json[RegisteredClaims.issuedAt] = _issuedAt.millisecondsSinceEpoch * 1000;
+    }
+    if( _id.isNotEmpty ) {
+      json[RegisteredClaims.jwtId] = _id;
+    }
+    json = _claimsToJson(json);
+    return json;
+  }
+
+  Map<String, dynamic> _claimsToJson(Map<String, dynamic> json) {
+    for(var entry in _tree.entries) {
+      final claim = entry.value;
+      if( claim.isValid && !claim.isMissing ) {
+        json[entry.key] = claim.data;
+      }
+    }
+    return json;
   }
 
   @override

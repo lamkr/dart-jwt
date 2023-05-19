@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
 import 'package:dart_jwt/exceptions/throwable.dart';

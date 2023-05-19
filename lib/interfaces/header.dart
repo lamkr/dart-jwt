@@ -1,3 +1,4 @@
+import 'package:dart_jwt/exceptions/invalid_object_exception.dart';
 import 'package:dart_jwt/ext/null_safety_object.dart';
 
 import 'claim.dart';
@@ -28,6 +29,8 @@ abstract class Header implements NullSafetyObject
   /// a invalid claim will be returned (see [Claim.invalid]).
   /// All the methods of that claim will throw [InvalidObjectException].
   Claim headerClaim(String name);
+
+  Map<String, dynamic> toJson();
 }
 
 class _InvalidHeader extends Header {
@@ -54,4 +57,8 @@ class _InvalidHeader extends Header {
 
   @override
   String get type => '';
+
+  @override
+  Map<String, dynamic> toJson() =>
+      throw InvalidObjectException(runtimeType);
 }

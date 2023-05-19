@@ -7,6 +7,10 @@ extension DateTimeExtension on DateTime {
   String toFormattedString([String format = 'yyyy-MM-dd HH:mm:ss']) {
     return DateFormat(format).format(this);
   }
+
+  bool get isValid => this != invalidDateTime;
+
+  bool get isNotValid => !isValid;
 }
 
 DateTime dateTimeFromSeconds(dynamic value) =>

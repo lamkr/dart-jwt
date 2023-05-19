@@ -15,6 +15,8 @@ abstract class Claim implements NullSafetyObject
   @override
   bool get isNotValid => !isValid;
 
+  dynamic get data;
+
   /// Whether this Claim has a null value or not.
   /// If the claim is not present, it will return false hence checking {@link Claim#isMissing} is advised as well
   /// Return whether this Claim has a null value or not.
@@ -81,52 +83,44 @@ class _InvalidClaim extends Claim {
   bool get isValid => false;
 
   @override
-  T as<T>() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  dynamic get data => throw InvalidObjectException(runtimeType);
 
   @override
-  bool? asBoolean() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  T as<T>() => throw InvalidObjectException(runtimeType);
 
   @override
-  DateTime? asDateTime() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  bool? asBoolean() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  double? asDouble() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  DateTime? asDateTime() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  int? asInt() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  double? asDouble() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  List<T> asList<T>() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  int? asInt() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  Map<String, V>? asMap<V>() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  List<T> asList<T>() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  String? asString() {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  Map<String, V>? asMap<V>() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  bool get isMissing {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  String? asString() =>
+    throw InvalidObjectException(runtimeType);
 
   @override
-  bool get isNull {
-    throw InvalidObjectException(runtimeType.toString());
-  }
+  bool get isMissing =>
+    throw InvalidObjectException(runtimeType);
+
+  @override
+  bool get isNull =>
+    throw InvalidObjectException(runtimeType);
 }

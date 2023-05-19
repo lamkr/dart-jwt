@@ -1,6 +1,7 @@
 import 'package:dart_jwt/ext/date_time_extension.dart';
 import 'package:dart_jwt/ext/null_safety_object.dart';
 
+import '../exceptions/invalid_object_exception.dart';
 import 'claim.dart';
 
 /// The Payload class represents the 2nd part of the JWT,
@@ -40,6 +41,8 @@ abstract class Payload implements NullSafetyObject {
 
   /// Get an non-null [Map] containing the claims defined in the token.
   Map<String, Claim> get claims;
+
+  Map<String, dynamic> toJson();
 }
 
 class _InvalidPayload extends Payload {
@@ -78,4 +81,8 @@ class _InvalidPayload extends Payload {
 
   @override
   String get subject => '';
+
+  @override
+  Map<String, dynamic> toJson() =>
+      throw InvalidObjectException(runtimeType);
 }

@@ -16,9 +16,12 @@ class DynamicClaim implements Claim
 {
   static const missing = _DynamicMissingClaim();
 
-  final dynamic data;
+  final dynamic _data;
 
-  const DynamicClaim(this.data);
+  const DynamicClaim(this._data);
+
+  @override
+  dynamic get data => _data;
 
   @override
   bool get isNotValid => !isValid;

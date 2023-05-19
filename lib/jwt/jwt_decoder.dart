@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
+import 'package:dart_jwt/impl/basic_header.dart';
+import 'package:dart_jwt/impl/basic_payload.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../impl.dart';
 import '../interfaces/claim.dart';
@@ -117,16 +119,23 @@ class JWTDecoder implements DecodedJWT
 
   factory JWTDecoder.fromJson(Map<String, dynamic> json) {
     //return _$JWTDecoderFromJson(json);
-    // TODO: implement
-    throw UnimplementedError();
+    final parts = json['_parts'];
+    final header = BasicHeader.fromJson(json['_header']);
+    final payload = BasicPayload.fromJson(json['_payload']);
+    return JWTDecoder._(parts, header, payload);
   }
+
+  JWTDecoder._(this._parts, this._header, this._payload);
 
   /// Connect the generated [_$JWTDecoderToJson] function
   /// to the `toJson` method.
   @override
   Map<String, dynamic> toJson() {
     //return _$JWTDecoderToJson(this);
-    // TODO: implement
-    throw UnimplementedError();
+    final json = <String, dynamic>{};
+    json['_parts'] = _parts;
+    json['_header'] = _header.toJson();
+    json['_payload'] = _payload.toJson();
+    return json;
   }
 }

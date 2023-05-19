@@ -1,4 +1,5 @@
 import 'package:dart_jwt/jwt/header_params.dart';
+import 'package:intl/intl.dart';
 
 import '../interfaces/claim.dart';
 import '../interfaces/header.dart';
@@ -54,16 +55,7 @@ class BasicHeader implements Header {
     final keyId = json[HeaderParams.keyId] ?? '';
     final claims = _claimsFromJson(json);
     //jsonToDateTime(json['dataRecebimento']),
-    //Double.tryParse(json['latitudeInicio'], latitudeInvalida),
     return BasicHeader(algorithm, type, contentType, keyId, claims);
-  }
-
-  /// Connect the generated [_$JWTDecoderToJson] function
-  /// to the `toJson` method.
-  Map<String, dynamic> toJson() {
-    // TODO: implement
-    return {};
-    //return _$JWTDecoderToJson(this);
   }
 
   static Map<String, Claim> _claimsFromJson(Map<String, dynamic> json) {
@@ -73,6 +65,38 @@ class BasicHeader implements Header {
       claims[entry.key] = claim;
     }
     return claims;
+  }
+
+  /// Connect the generated [_$JWTDecoderToJson] function
+  /// to the `toJson` method.
+  @override
+  Map<String, dynamic> toJson() {
+    //return _$JWTDecoderToJson(this);
+    var json = <String, dynamic>{};
+    if( _algorithm.isNotEmpty ) {
+      json[HeaderParams.algorithm] = _algorithm;
+    }
+    if( _type.isNotEmpty ) {
+      json[HeaderParams.type] = _type;
+    }
+    if( _contentType.isNotEmpty ) {
+      json[HeaderParams.contentType] = _contentType;
+    }
+    if( _keyId.isNotEmpty ) {
+      json[HeaderParams.keyId] = _keyId;
+    }
+    json = _claimsToJson(json);
+    return json;
+  }
+
+  Map<String, dynamic> _claimsToJson(Map<String, dynamic> json) {
+    for(var entry in _tree.entries) {
+      final claim = entry.value;
+      if( claim.isValid && !claim.isMissing ) {
+        json[entry.key] = claim.data;
+      }
+    }
+    return json;
   }
 
 }

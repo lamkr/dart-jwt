@@ -1,9 +1,9 @@
 class InvalidObjectException implements Exception {
 
-  final String typeName;
+  final Type type;
 
-  const InvalidObjectException(this.typeName);
+  const InvalidObjectException(this.type);
 
   @override
-  String toString() => 'This object of type $typeName is invalid';
+  String toString() => 'This object of type $type is invalid';
 }
