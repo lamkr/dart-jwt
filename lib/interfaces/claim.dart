@@ -65,7 +65,7 @@ abstract class Claim implements NullSafetyObject
   /// Get this Claim as a generic [Map] of values.
   /// Throws [JWTDecodeException] if the value can't be converted
   /// to a Map.
-  Map<String, T>? asMap<T>();
+  Map<String, V>? asMap<V>();
 
   /// Get this Claim as a custom type T.
   /// This method will return `null` if [Claim.isMissing()]

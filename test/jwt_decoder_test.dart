@@ -405,6 +405,32 @@ void main() {
       deserializedJwt.claims['extraClaim']?.asString());
   });
 
+  test('Should decode header claims', () {
+    String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImRhdGUiOjE2NDczNTgzMjUsInN0cmluZyI6InN0cmluZyIsImJvb2wiOnRydWUsImRvdWJsZSI6MTIzLjEyMywibGlzdCI6WzE2NDczNTgzMjVdLCJtYXAiOnsiZGF0ZSI6MTY0NzM1ODMyNSwiaW5zdGFudCI6MTY0NzM1ODMyNX0sImludCI6NDIsImxvbmciOjQyMDAwMDAwMDAsImluc3RhbnQiOjE2NDczNTgzMjV9.eyJpYXQiOjE2NDczNjA4ODF9.S2nZDM03ZDvLMeJLWOIqWZ9kmYHZUueyQiIZCCjYNL8";
+  
+    DateTime expectedDate = DateTime.fromMillisecondsSinceEpoch(1647358325*1000);
+  
+    DecodedJWT decoded = JWT.decode(jwt);
+    expect(decoded, isValid);
+    expect(decoded.headerClaim("date").asDateTime(), expectedDate);
+    expect(decoded.headerClaim("string").asString(), "string");
+    expect(decoded.headerClaim("bool").asBoolean(), isTrue);
+    expect(decoded.headerClaim("double").asDouble(), 123.123);
+    expect(decoded.headerClaim("int").asInt(), 42);
+    expect(decoded.headerClaim("long").asInt(), 4200000000);
+
+    Map<String, dynamic>? headerMap = decoded.headerClaim("map").asMap<dynamic>();
+    expect(headerMap, isNotNull);
+    expect(headerMap?.length, 2);
+    expect(headerMap, containsPair("date", 1647358325));
+    expect(headerMap, containsPair("instant", 1647358325));
+  
+    List<dynamic>? headerList = decoded.headerClaim("list").asList<dynamic>();
+    expect(headerList, isNotNull);
+    expect(headerList?.length, 1);
+    expect(headerList, contains(1647358325));
+  });
+
 }
 
 DecodedJWT _customJWT(String jsonHeader, String jsonPayload, String signature) {
