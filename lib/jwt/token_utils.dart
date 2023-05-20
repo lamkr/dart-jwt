@@ -9,12 +9,15 @@ abstract class TokenUtils
         if (token.isEmpty) {
             throw JWTDecodeException('The token is empty.');
         }
+        if( !token.contains('.')) {
+            throw _wrongNumberOfParts(0);
+        }
 
         final delimiter = '.';
         final parts = token.split(delimiter);
 
         if(parts.length != 3) {
-            throw _wrongNumberOfParts(parts.length);
+            throw _wrongNumberOfParts(parts.isEmpty ? 0 : parts.length);
         }
 
         return parts;
