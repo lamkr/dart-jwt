@@ -22,5 +22,6 @@ abstract class DecodedJWT implements Payload, Header, NullSafetyObject
   String get signature;
 
   /// Serialize to json.
+  @override
   Map<String, dynamic> toJson();
 }

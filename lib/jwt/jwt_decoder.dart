@@ -1,17 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
-import 'package:dart_jwt/impl/basic_header.dart';
-import 'package:dart_jwt/impl/basic_payload.dart';
+import 'package:dart_jwt/exceptions.dart';
+import 'package:dart_jwt/impl.dart';
+import 'package:dart_jwt/interfaces.dart';
+import 'package:dart_jwt/jwt.dart';
 import 'package:json_annotation/json_annotation.dart';
-import '../impl.dart';
-import '../interfaces/claim.dart';
-import '../interfaces/decoded_jwt.dart';
-import '../interfaces/header.dart';
-import '../interfaces/jwt_parts_parser.dart';
-import '../interfaces/payload.dart';
-import 'token_utils.dart';
 
 //part 'jwt_decoder.g.dart';
 

@@ -1,9 +1,6 @@
-import 'package:dart_jwt/jwt/header_params.dart';
-import 'package:intl/intl.dart';
-
-import '../interfaces/claim.dart';
-import '../interfaces/header.dart';
-import 'dynamic_claim.dart';
+import 'package:dart_jwt/impl.dart';
+import 'package:dart_jwt/interfaces.dart';
+import 'package:dart_jwt/jwt.dart';
 
 // Implements the [Header] interface.
 class BasicHeader implements Header {

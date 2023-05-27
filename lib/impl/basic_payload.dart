@@ -1,10 +1,8 @@
-import 'package:dart_jwt/impl/dynamic_claim.dart';
+import 'package:dart_jwt/exceptions.dart';
+import 'package:dart_jwt/extensions.dart';
+import 'package:dart_jwt/impl.dart';
 import 'package:dart_jwt/interfaces.dart';
-
-import '../exceptions/jwt_decode_exception.dart';
-import '../ext/date_time_extension.dart';
-import '../interfaces/claim.dart';
-import '../jwt/registered_claims.dart';
+import 'package:dart_jwt/jwt.dart';
 
 class BasicPayload implements Payload {
   final String _subject;
@@ -40,6 +38,7 @@ class BasicPayload implements Payload {
         issuedAt, id, tree);
   }
 
+  @override
   Map<String, dynamic> toJson() {
     // TODO: implement
     var json = <String, dynamic>{};

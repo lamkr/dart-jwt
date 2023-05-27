@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
-import 'package:dart_jwt/exceptions/throwable.dart';
+import 'package:dart_jwt/exceptions.dart';
 import 'package:dart_jwt/interfaces.dart';
-import 'package:dart_jwt/interfaces/claim.dart';
 import 'package:dart_jwt/jwt.dart';
 import 'package:test/test.dart';
 
-import 'core_matchers.dart';
+import 'lib/core_matchers.dart';
 
 void main() {
 

@@ -1,6 +1,4 @@
-import 'package:dart_jwt/exceptions/jwt_decode_exception.dart';
-import 'package:dart_jwt/interfaces/claim.dart';
-import 'package:dart_jwt/jwt/token_utils.dart';
+import 'package:dart_jwt/interfaces.dart';
 import 'package:test/test.dart';
 
 void main() {

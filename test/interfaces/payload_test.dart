@@ -1,6 +1,5 @@
-import 'package:dart_jwt/ext/date_time_extension.dart';
+import 'package:dart_jwt/extensions.dart';
 import 'package:dart_jwt/interfaces.dart';
-import 'package:dart_jwt/interfaces/claim.dart';
 import 'package:test/test.dart';
 
 void main() {
