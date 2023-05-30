@@ -9,4 +9,3 @@ export 'interfaces/jwt_verifier.dart';
 export 'interfaces/payload.dart';
 export 'interfaces/payload_deserializer.dart';
 export 'interfaces/verification.dart';
-

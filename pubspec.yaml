@@ -4,11 +4,13 @@ version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: '>=3.0.0'
+  sdk: '>=2.19.0'
 
 dependencies:
+  collection: ^1.17.2
   intl: ^0.18.1
   json_annotation: ^4.8.1
+  pointycastle: ^3.7.3
 
 dev_dependencies:
   json_serializable: ^6.6.2

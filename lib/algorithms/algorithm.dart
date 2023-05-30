@@ -1,11 +1,19 @@
 import 'dart:typed_data';
 
+import 'package:dart_jwt/algorithms.dart';
 import 'package:dart_jwt/interfaces.dart';
-
-import 'none_algorithm.dart';
 
 abstract class Algorithm {
   static const Algorithm none = NoneAlgorithm();
+
+  static Algorithm hmac256(Uint8List secret) =>
+      HmacAlgorithm("HS256", "SHA-256/HMAC", secret);
+
+  static Algorithm hmac384(Uint8List secret) =>
+      HmacAlgorithm("HS384", "SHA-384/HMAC", secret);
+
+  static Algorithm hmac512(Uint8List secret) =>
+      HmacAlgorithm("HS512", "SHA-512/HMAC", secret);
 
   final String name;
   final String description;
@@ -14,7 +22,7 @@ abstract class Algorithm {
 
   /// Getter for the Id of the Private Key used to sign the tokens.
   /// This is usually specified as the `kid` claim in the Header.
-  String get signingKeyId => '';
+  String? get signingKeyId => null;
 
   /// Verify the given token using this Algorithm instance.
   /// Throws [SignatureVerificationException] if the Token's Signature is invalid,
