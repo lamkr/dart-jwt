@@ -40,7 +40,6 @@ class BasicPayload implements Payload {
 
   @override
   Map<String, dynamic> toJson() {
-    // TODO: implement
     var json = <String, dynamic>{};
     if( _subject.isNotEmpty ) {
       json[RegisteredClaims.subject] = _subject;
@@ -88,10 +87,10 @@ class BasicPayload implements Payload {
 
   @override
   Claim claim(String name) {
-    if(!_tree.containsKey(name)) {
-      return DynamicClaim.missing;
+    if(_tree.containsKey(name)) {
+      return _tree[name] as Claim;
     }
-    return _tree[name] as Claim;
+    return Claim.missing;
   }
 
   @override

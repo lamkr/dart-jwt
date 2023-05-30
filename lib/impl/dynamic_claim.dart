@@ -5,17 +5,8 @@
 import '../exceptions/jwt_decode_exception.dart';
 import '../interfaces/claim.dart';
 
-class _DynamicMissingClaim extends DynamicClaim {
-  const _DynamicMissingClaim() : super(null);
-
-  @override
-  bool get isMissing => true;
-}
-
 class DynamicClaim implements Claim
 {
-  static const missing = _DynamicMissingClaim();
-
   final dynamic _data;
 
   const DynamicClaim(this._data);
@@ -74,7 +65,13 @@ class DynamicClaim implements Claim
     if( isMissing || isNull || data is! int) {
       return null;
     }
-    return DateTime.fromMillisecondsSinceEpoch(data * 1000);
+    if( data is int) {
+      return DateTime.fromMillisecondsSinceEpoch(data * 1000);
+    }
+    else if( data is DateTime ) {
+      return data as DateTime;
+    }
+    return null;
   }
 
   @override

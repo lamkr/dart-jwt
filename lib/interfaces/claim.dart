@@ -7,6 +7,10 @@ abstract class Claim implements NullSafetyObject
 {
   static const Claim invalid = _InvalidClaim();
 
+  static const Claim missing = _MissingClaim();
+
+  static const Claim nullClaim = _NullClaim();
+
   const Claim();
 
   @override
@@ -123,4 +127,86 @@ class _InvalidClaim extends Claim {
   @override
   bool get isNull =>
     throw InvalidObjectException(runtimeType);
+}
+
+class _MissingClaim extends Claim {
+
+  const _MissingClaim();
+
+  @override
+  bool get isValid => true;
+
+  @override
+  dynamic get data => null;
+
+  @override
+  T as<T>() => null as T;
+
+  @override
+  bool? asBoolean() => null;
+
+  @override
+  DateTime? asDateTime() => null;
+
+  @override
+  double? asDouble() => null;
+
+  @override
+  int? asInt() => null;
+
+  @override
+  List<T>? asList<T>() => null;
+
+  @override
+  Map<String, V>? asMap<V>() => null;
+
+  @override
+  String? asString() => null;
+
+  @override
+  bool get isMissing => true;
+
+  @override
+  bool get isNull => false;
+}
+
+class _NullClaim extends Claim {
+
+  const _NullClaim();
+
+  @override
+  bool get isValid => true;
+
+  @override
+  dynamic get data => null;
+
+  @override
+  T as<T>() => null as T;
+
+  @override
+  bool? asBoolean() => null;
+
+  @override
+  DateTime? asDateTime() => null;
+
+  @override
+  double? asDouble() => null;
+
+  @override
+  int? asInt() => null;
+
+  @override
+  List<T>? asList<T>() => null;
+
+  @override
+  Map<String, V>? asMap<V>() => null;
+
+  @override
+  String? asString() => null;
+
+  @override
+  bool get isMissing => false;
+
+  @override
+  bool get isNull => true;
 }

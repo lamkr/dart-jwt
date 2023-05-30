@@ -35,7 +35,7 @@ void main() {
   });
 
   test('Should return null signing key id', () {
-    expect(Algorithm.none.signingKeyId, isEmpty);
+    expect(Algorithm.none.signingKeyId, isNull);
   });
 
   test('Should throw when signature not valid base 64', () {

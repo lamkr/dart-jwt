@@ -8,15 +8,15 @@ class BasicHeader implements Header {
   final String _type;
   final String _contentType;
   final String _keyId;
-  final Map<String, Claim> _tree;
+  final Map<String, Claim> tree;
 
   BasicHeader(
     this._algorithm,
     this._type,
     this._contentType,
     this._keyId,
-    this._tree,
-  );
+    Map<String, Claim> tree
+  ) : tree = Map.unmodifiable(tree);
 
   @override
   bool get isValid => true;
@@ -32,10 +32,10 @@ class BasicHeader implements Header {
 
   @override
   Claim headerClaim(String name) {
-    if( _tree.containsKey(name) ) {
-      return _tree[name] as Claim;
+    if( tree.containsKey(name) ) {
+      return tree[name] as Claim;
     }
-    return Claim.invalid;
+    return Claim.missing;
   }
 
   @override
@@ -87,7 +87,7 @@ class BasicHeader implements Header {
   }
 
   Map<String, dynamic> _claimsToJson(Map<String, dynamic> json) {
-    for(var entry in _tree.entries) {
+    for(var entry in tree.entries) {
       final claim = entry.value;
       if( claim.isValid && !claim.isMissing ) {
         json[entry.key] = claim.data;
