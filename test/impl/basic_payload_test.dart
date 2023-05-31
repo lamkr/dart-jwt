@@ -3,7 +3,7 @@ import 'package:dart_jwt/impl.dart';
 import 'package:dart_jwt/interfaces.dart';
 import 'package:test/test.dart';
 
-import '../lib/core_matchers.dart';
+import '../lib.dart';
 
 void main() {
   final DateTime expiresAt = DateTime.now().add(Duration(seconds: 10));

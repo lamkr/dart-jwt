@@ -1,6 +1,7 @@
 library dart_jwt;
 
 export 'interfaces/claim.dart';
+export 'interfaces/claims_holder.dart';
 export 'interfaces/decoded_jwt.dart';
 export 'interfaces/header.dart';
 export 'interfaces/header_deserializer.dart';

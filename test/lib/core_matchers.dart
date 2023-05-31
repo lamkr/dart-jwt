@@ -1,4 +1,3 @@
-import 'package:dart_jwt/ext/null_safety_object.dart';
 import 'package:dart_jwt/extensions.dart';
 import 'package:test/test.dart';
 

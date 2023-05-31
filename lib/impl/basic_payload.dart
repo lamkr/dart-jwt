@@ -4,7 +4,7 @@ import 'package:dart_jwt/impl.dart';
 import 'package:dart_jwt/interfaces.dart';
 import 'package:dart_jwt/jwt.dart';
 
-class BasicPayload implements Payload {
+class BasicPayload extends ClaimsHolder implements Payload {
   final String _subject;
   final String _issuer;
   final List<String> _audience;
@@ -12,9 +12,8 @@ class BasicPayload implements Payload {
   final DateTime _notBefore;
   final DateTime _issuedAt;
   final String _id;
-  final Map<String, Claim> _tree;
 
-  BasicPayload(
+  const BasicPayload(
     this._issuer,
     this._subject,
     this._audience,
@@ -22,8 +21,8 @@ class BasicPayload implements Payload {
     this._notBefore,
     this._issuedAt,
     this._id,
-    this._tree,
-  );
+    Map<String, Claim> tree,
+  ) : super(tree);
 
   factory BasicPayload.fromJson(Map<String, dynamic> json) {
     final issuer = _getString(json[RegisteredClaims.issuer]);
@@ -67,7 +66,7 @@ class BasicPayload implements Payload {
   }
 
   Map<String, dynamic> _claimsToJson(Map<String, dynamic> json) {
-    for(var entry in _tree.entries) {
+    for(var entry in claims.entries) {
       final claim = entry.value;
       if( claim.isValid && !claim.isMissing ) {
         json[entry.key] = claim.data;
@@ -87,14 +86,11 @@ class BasicPayload implements Payload {
 
   @override
   Claim claim(String name) {
-    if(_tree.containsKey(name)) {
-      return _tree[name] as Claim;
+    if(claims.containsKey(name)) {
+      return claims[name] as Claim;
     }
     return Claim.missing;
   }
-
-  @override
-  Map<String, Claim> get claims => _tree;
 
   @override
   DateTime get expiresAt => _expiresAt;
