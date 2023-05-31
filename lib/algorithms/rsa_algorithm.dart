@@ -3,32 +3,33 @@ import 'dart:typed_data';
 
 import 'package:dart_jwt/algorithms.dart';
 import 'package:dart_jwt/exceptions.dart';
-import 'package:dart_jwt/interfaces/decoded_jwt.dart';
-import 'package:pointycastle/pointycastle.dart' hide Algorithm;
+import 'package:dart_jwt/interfaces.dart';
 
-class RsaAlgorithm extends Algorithm {
-
-  static Uint8List getSecretBytes(String secret) =>
-      Uint8List.fromList(secret.codeUnits);
+class RSAAlgorithm extends Algorithm {
 
   final CryptoHelper _crypto;
-  final RSAAsymmetricKey _key;
+  final RSAKeyProvider _keyProvider;
 
   /// Visible for testing.
-  RsaAlgorithm.withCryptoHelper(this._crypto, super.name, super.algorithm,
-      RSAAsymmetricKey key)
-  : _key = Uint8List.fromList(key);
+  RSAAlgorithm.withCryptoHelper(this._crypto, super.name, super.algorithm,
+      this._keyProvider);
+  
+  RSAAlgorithm(String name, String algorithm, RSAKeyProvider keyProvider)
+    : this.withCryptoHelper(const CryptoHelper(), name, algorithm, keyProvider);
 
-  RsaAlgorithm(String name, String algorithm, RSAAsymmetricKey key)
-    : this.withCryptoHelper(const CryptoHelper(), name, algorithm, key);
+  @override
+  String get signingKeyId => _keyProvider.privateKeyId;
 
   @override
   Uint8List sign(Uint8List contentBytes) {
     try {
-      return _crypto.createSignatureForContent(description, _secret, contentBytes);
+      return _crypto.createSignatureForContent(description,
+          _keyProvider.privateKey, contentBytes);
     }
-    catch (e) //TODO in Java: (NoSuchAlgorithmException | InvalidKeyException e)
-    {
+    on Error catch (error) {
+      throw SignatureGenerationException.withError(this, error);
+    }
+    catch (e) {
       throw SignatureGenerationException(this, e as Exception?);
     }
   }
@@ -37,10 +38,12 @@ class RsaAlgorithm extends Algorithm {
   Uint8List signParts(Uint8List headerBytes, Uint8List payloadBytes) {
     try {
       return _crypto.createSignatureFor(
-          description, _secret, headerBytes, payloadBytes);
+          description, _keyProvider.privateKey, headerBytes, payloadBytes);
     }
-    catch (e) //TODO in Java: (NoSuchAlgorithmException | InvalidKeyException e)
-    {
+    on Error catch (error) {
+      throw SignatureGenerationException.withError(this, error);
+    }
+    catch (e) {
       throw SignatureGenerationException(this, e as Exception?);
     }
   }
@@ -58,9 +61,11 @@ class RsaAlgorithm extends Algorithm {
         throw SignatureVerificationException(this);
       }
     }
-    catch (e) //TODO In java: (IllegalStateException | InvalidKeyException | NoSuchAlgorithmException | IllegalArgumentException e)
-    {
-      throw SignatureVerificationException(this, e as Exception?);
+    on Error catch (error) {
+      throw SignatureGenerationException.withError(this, error);
+    }
+    catch (e) {
+      throw SignatureGenerationException(this, e as Exception?);
     }
   }
 }

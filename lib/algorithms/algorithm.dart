@@ -27,14 +27,14 @@ abstract class Algorithm {
   /// Creates a new Algorithm instance using SHA-256/RSA.
   /// Tokens specify this as "RS256".
   static Algorithm rsa256WithKeys(RSAPublicKey? publicKey, RSAPrivateKey? privateKey) {
-    final keyProvider = RsaAlgorithm.providerForKeys(publicKey, privateKey);
+    final keyProvider = RSAAlgorithm.providerForKeys(publicKey, privateKey);
     return rsa256WithKeyProvider(keyProvider);
   }
 
   /// Creates a new Algorithm instance using SHA-256/RSA.
   /// Tokens specify this as "RS256".
   static Algorithm rsa256WithKeyProvider(RSAKeyProvider keyProvider) {
-    return RsaAlgorithm("RS256", "SHA-256/RSA", keyProvider);
+    return RSAAlgorithm("RS256", "SHA-256/RSA", keyProvider);
   }
 
   final String name;
