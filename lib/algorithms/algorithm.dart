@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dart_jwt/algorithms.dart';
 import 'package:dart_jwt/interfaces.dart';
+import 'package:pointycastle/pointycastle.dart';
 
 abstract class Algorithm {
   static const Algorithm none = NoneAlgorithm();
@@ -14,6 +15,27 @@ abstract class Algorithm {
 
   static Algorithm hmac512(Uint8List secret) =>
       HmacAlgorithm("HS512", "SHA-512/HMAC", secret);
+
+  /// Creates a new Algorithm instance using SHA-256/RSA.
+  /// Tokens specify this as "RS256".
+  static Algorithm rsa256(RSAAsymmetricKey key) {
+    RSAPublicKey? publicKey = key is RSAPublicKey ? key : null;
+    RSAPrivateKey? privateKey = key is RSAPrivateKey ? key : null;
+    return rsa256WithKeys(publicKey, privateKey);
+  }
+
+  /// Creates a new Algorithm instance using SHA-256/RSA.
+  /// Tokens specify this as "RS256".
+  static Algorithm rsa256WithKeys(RSAPublicKey? publicKey, RSAPrivateKey? privateKey) {
+    final keyProvider = RsaAlgorithm.providerForKeys(publicKey, privateKey);
+    return rsa256WithKeyProvider(keyProvider);
+  }
+
+  /// Creates a new Algorithm instance using SHA-256/RSA.
+  /// Tokens specify this as "RS256".
+  static Algorithm rsa256WithKeyProvider(RSAKeyProvider keyProvider) {
+    return RsaAlgorithm("RS256", "SHA-256/RSA", keyProvider);
+  }
 
   final String name;
   final String description;
