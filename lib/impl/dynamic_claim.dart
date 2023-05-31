@@ -49,14 +49,14 @@ class DynamicClaim implements Claim
 
   @override
   int? asInt() {
-    return isMissing || isNull || data is! int
-        ? null : data as int;
+    return isMissing || isNull || data is! num
+        ? null : (data is double ? (data as double).toInt() : data as int);
   }
 
   @override
   double? asDouble() {
-    return isMissing || isNull || data is! double
-        ? null : data as double;
+    return isMissing || isNull || data is! num
+        ? null : (data is int ? (data as int).toDouble() : data as double);
   }
 
   @override

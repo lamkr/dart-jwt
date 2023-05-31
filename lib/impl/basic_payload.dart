@@ -51,13 +51,13 @@ class BasicPayload implements Payload {
       json[RegisteredClaims.audience] = _audience;
     }
     if( _expiresAt.isValid ) {
-      json[RegisteredClaims.expiresAt] = _expiresAt.millisecondsSinceEpoch * 1000;
+      json[RegisteredClaims.expiresAt] = _expiresAt.millisecondsSinceEpoch ~/ 1000;
     }
     if( _notBefore.isValid ) {
-      json[RegisteredClaims.notBefore] = _notBefore.millisecondsSinceEpoch * 1000;
+      json[RegisteredClaims.notBefore] = _notBefore.millisecondsSinceEpoch ~/ 1000;
     }
     if( _issuedAt.isValid ) {
-      json[RegisteredClaims.issuedAt] = _issuedAt.millisecondsSinceEpoch * 1000;
+      json[RegisteredClaims.issuedAt] = _issuedAt.millisecondsSinceEpoch ~/ 1000;
     }
     if( _id.isNotEmpty ) {
       json[RegisteredClaims.jwtId] = _id;
