@@ -1,4 +1,5 @@
 import 'package:dart_jwt/ext/null_safety_object.dart';
+import 'package:dart_jwt/extensions.dart';
 import 'package:test/test.dart';
 
 /// Returns a matcher that matches the isValid property of [NullSafetyObject].
@@ -29,4 +30,34 @@ class _IsNotValid extends Matcher {
   @override
   Description describe(Description description) =>
       description.add('not valid');
+}
+
+/// Returns a matcher that matches an invalid [DateTime].
+const Matcher isNotValidDateTime = _IsNotValidDateTime();
+
+class _IsNotValidDateTime extends Matcher {
+  const _IsNotValidDateTime();
+
+  @override
+  bool matches(Object? item, Map matchState) =>
+      (item as DateTime) == invalidDateTime;
+
+  @override
+  Description describe(Description description) =>
+      description.add('not valid DateTime');
+}
+
+/// Returns a matcher that matches an valid [DateTime].
+const Matcher isValidDateTime = _IsValidDateTime();
+
+class _IsValidDateTime extends Matcher {
+  const _IsValidDateTime();
+
+  @override
+  bool matches(Object? item, Map matchState) =>
+      (item as DateTime) != invalidDateTime;
+
+  @override
+  Description describe(Description description) =>
+      description.add('not valid DateTime');
 }

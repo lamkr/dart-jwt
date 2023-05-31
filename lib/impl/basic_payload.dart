@@ -15,8 +15,8 @@ class BasicPayload implements Payload {
   final Map<String, Claim> _tree;
 
   BasicPayload(
-    this._subject,
     this._issuer,
+    this._subject,
     this._audience,
     this._expiresAt,
     this._notBefore,
@@ -26,26 +26,26 @@ class BasicPayload implements Payload {
   );
 
   factory BasicPayload.fromJson(Map<String, dynamic> json) {
-    final subject = _getString(json[RegisteredClaims.subject]);
     final issuer = _getString(json[RegisteredClaims.issuer]);
+    final subject = _getString(json[RegisteredClaims.subject]);
     final audience = _audienceFromJson(json);
     final expiresAt = dateTimeFromSeconds(json[RegisteredClaims.expiresAt]);
     final notBefore = dateTimeFromSeconds(json[RegisteredClaims.notBefore]);
     final issuedAt = dateTimeFromSeconds(json[RegisteredClaims.issuedAt]);
     final id = _getString(json[RegisteredClaims.jwtId]);
     final tree = _claimsFromJson(json);
-    return BasicPayload(subject, issuer, audience, expiresAt, notBefore,
+    return BasicPayload(issuer, subject, audience, expiresAt, notBefore,
         issuedAt, id, tree);
   }
 
   @override
   Map<String, dynamic> toJson() {
     var json = <String, dynamic>{};
-    if( _subject.isNotEmpty ) {
-      json[RegisteredClaims.subject] = _subject;
-    }
     if( _issuer.isNotEmpty ) {
       json[RegisteredClaims.issuer] = _issuer;
+    }
+    if( _subject.isNotEmpty ) {
+      json[RegisteredClaims.subject] = _subject;
     }
     if( _audience.isNotEmpty ) {
       json[RegisteredClaims.audience] = _audience;
@@ -113,6 +113,8 @@ class BasicPayload implements Payload {
 
   @override
   String get subject => _subject;
+
+  Map<String, Claim> get tree => claims;
 
   static List<String> _audienceFromJson(Map<String, dynamic> json) {
     final audience = json[RegisteredClaims.audience];
