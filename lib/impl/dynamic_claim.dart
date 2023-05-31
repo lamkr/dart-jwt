@@ -2,8 +2,10 @@
 ///
 /// Note: this implementation is a replacement of
 /// `JsonNodeClaim` in Java library.
-import '../exceptions/jwt_decode_exception.dart';
-import '../interfaces/claim.dart';
+import 'dart:convert';
+import 'package:dart_jwt/extensions.dart';
+import 'package:dart_jwt/exceptions.dart';
+import 'package:dart_jwt/interfaces.dart';
 
 class DynamicClaim implements Claim
 {
@@ -32,6 +34,9 @@ class DynamicClaim implements Claim
       return "Missing claim";
     } else if (isNull) {
       return "Null claim";
+    }
+    else if (data is JsonSerializable) {
+      return jsonEncode(data.toJson());
     }
     return data.toString();
   }
@@ -80,11 +85,21 @@ class DynamicClaim implements Claim
       return null;
     }
     try {
-      return List.castFrom<dynamic, T>(data);
+      final list = <T>[];
+      for( var elem in data ) {
+        list.add(elem);
+      }
+      return list;
     }
-    on Exception catch(e) {
-      throw JWTDecodeException("Couldn't map the Claim's array contents to ${T.runtimeType}"
-          , e);
+    on Error catch(error) {
+      throw JWTDecodeException.withError(
+          "Couldn't map the Claim's list contents to ${T.runtimeType}"
+          , error);
+    }
+    catch(e) {
+      throw JWTDecodeException(
+          "Couldn't map the Claim's list contents to ${T.runtimeType}"
+          , e as Exception?);
     }
   }
 
@@ -94,10 +109,20 @@ class DynamicClaim implements Claim
       return null;
     }
     try {
-      return Map.castFrom<dynamic, dynamic, String, V>(data);
+      final dataMap = data as Map;
+      final map = <String, V>{};
+      for( var entry in dataMap.entries) {
+        map[entry.key] = entry.value;
+      }
+      return map;
     }
-    on Exception catch(e) {
-      throw JWTDecodeException("Couldn't map the Claim value to Map", e);
+    on Error catch(error) {
+      throw JWTDecodeException.withError("Couldn't map the Claim value to Map",
+          error);
+    }
+    catch(e) {
+      throw JWTDecodeException("Couldn't map the Claim value to Map",
+          e as Exception?);
     }
   }
 
@@ -109,8 +134,14 @@ class DynamicClaim implements Claim
     try {
       return data as T;
     }
-    on Exception catch(e) {
-      throw JWTDecodeException("Couldn't map the Claim value to ${T.runtimeType}", e);
+    on Error catch(error) {
+      throw JWTDecodeException.withError(
+          "Couldn't map the Claim value to ${T.runtimeType}", error);
+    }
+    catch(e) {
+      throw JWTDecodeException(
+          "Couldn't map the Claim value to ${T.runtimeType}",
+            e as Exception?);
     }
   }
 }

@@ -1,9 +1,9 @@
-import 'package:dart_jwt/exceptions/invalid_object_exception.dart';
-import 'package:dart_jwt/ext/null_safety_object.dart';
+import 'package:dart_jwt/exceptions.dart';
+import 'package:dart_jwt/extensions.dart';
 
 import 'claim.dart';
 
-abstract class Header implements NullSafetyObject
+abstract class Header implements NullSafetyObject, JsonSerializable
 {
   static const Header invalid = _InvalidHeader();
 
@@ -30,6 +30,7 @@ abstract class Header implements NullSafetyObject
   /// All the methods of that claim will throw [InvalidObjectException].
   Claim headerClaim(String name);
 
+  @override
   Map<String, dynamic> toJson();
 }
 

@@ -1,4 +1,5 @@
 import 'package:dart_jwt/ext/null_safety_object.dart';
+import 'package:dart_jwt/extensions.dart';
 import '../exceptions/invalid_object_exception.dart';
 
 /// The Claim class holds the value in a generic way
@@ -90,7 +91,7 @@ class _InvalidClaim extends Claim {
   dynamic get data => throw InvalidObjectException(runtimeType);
 
   @override
-  T as<T>() => throw InvalidObjectException(runtimeType);
+  T? as<T>() => throw InvalidObjectException(runtimeType);
 
   @override
   bool? asBoolean() =>
@@ -127,6 +128,9 @@ class _InvalidClaim extends Claim {
   @override
   bool get isNull =>
     throw InvalidObjectException(runtimeType);
+
+  @override
+  String toString() => throw InvalidObjectException(runtimeType);
 }
 
 class _MissingClaim extends Claim {
@@ -140,7 +144,7 @@ class _MissingClaim extends Claim {
   dynamic get data => null;
 
   @override
-  T as<T>() => null as T;
+  T? as<T>() => data as T?;
 
   @override
   bool? asBoolean() => null;
@@ -168,6 +172,9 @@ class _MissingClaim extends Claim {
 
   @override
   bool get isNull => false;
+
+  @override
+  String toString() => 'Missing claim';
 }
 
 class _NullClaim extends Claim {
@@ -181,7 +188,7 @@ class _NullClaim extends Claim {
   dynamic get data => null;
 
   @override
-  T as<T>() => null as T;
+  T? as<T>() => data as T?;
 
   @override
   bool? asBoolean() => null;
@@ -209,4 +216,7 @@ class _NullClaim extends Claim {
 
   @override
   bool get isNull => true;
+
+  @override
+  String toString() => 'Null claim';
 }

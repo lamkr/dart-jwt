@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dart_jwt/interfaces.dart';
 import 'package:test/test.dart';
 
@@ -17,6 +19,7 @@ void main() {
 
 /// Implementation that does not override {@code asInstant()}
 class ClaimImplForTest implements Claim {
+  int get nextInt => Random().nextInt(1);
   final DateTime? date;
 
   ClaimImplForTest(this.date);

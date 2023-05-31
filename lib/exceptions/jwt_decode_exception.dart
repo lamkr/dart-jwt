@@ -6,4 +6,7 @@ class JWTDecodeException extends JWTVerificationException {
 
   JWTDecodeException(String message, [Exception? cause] )
       : super(message, cause);
+
+  JWTDecodeException.withError(String message, Error error )
+      : super.withError(message, error);
 }

@@ -6,6 +6,9 @@ class JWTVerificationException extends Throwable {
   JWTVerificationException(dynamic message, [Exception? cause]):
       super(message, cause);
 
+  JWTVerificationException.withError(dynamic message, Error error):
+        super.withError(message, error);
+
   @override
   String toString() {
     if (message.isEmpty) {

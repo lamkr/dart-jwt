@@ -1,12 +1,13 @@
 import 'package:dart_jwt/ext/date_time_extension.dart';
 import 'package:dart_jwt/ext/null_safety_object.dart';
+import 'package:dart_jwt/ext/json_serializable.dart';
 
 import '../exceptions/invalid_object_exception.dart';
 import 'claim.dart';
 
 /// The Payload class represents the 2nd part of the JWT,
 /// where the Payload value is held.
-abstract class Payload implements NullSafetyObject {
+abstract class Payload implements NullSafetyObject, JsonSerializable {
 
   static const Payload invalid = _InvalidPayload();
 
@@ -42,6 +43,7 @@ abstract class Payload implements NullSafetyObject {
   /// Get an non-null [Map] containing the claims defined in the token.
   Map<String, Claim> get claims;
 
+  @override
   Map<String, dynamic> toJson();
 }
 
