@@ -19,14 +19,17 @@ abstract class Algorithm {
   /// Creates a new Algorithm instance using SHA-256/RSA.
   /// Tokens specify this as "RS256".
   static Algorithm rsa256(RSAAsymmetricKey key) {
-    RSAPublicKey? publicKey = key is RSAPublicKey ? key : null;
-    RSAPrivateKey? privateKey = key is RSAPrivateKey ? key : null;
+    RSAPublicKey? publicKey =
+        key is RSAPublicKey ? key : RSAPublicKey(BigInt.zero, BigInt.zero);
+    RSAPrivateKey? privateKey =
+        key is RSAPrivateKey ? key : RSAPrivateKey(BigInt.zero, BigInt.zero
+            , BigInt.zero, BigInt.zero);
     return rsa256WithKeys(publicKey, privateKey);
   }
 
   /// Creates a new Algorithm instance using SHA-256/RSA.
   /// Tokens specify this as "RS256".
-  static Algorithm rsa256WithKeys(RSAPublicKey? publicKey, RSAPrivateKey? privateKey) {
+  static Algorithm rsa256WithKeys(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
     final keyProvider = RSAAlgorithm.providerForKeys(publicKey, privateKey);
     return rsa256WithKeyProvider(keyProvider);
   }

@@ -3,8 +3,11 @@ import 'dart:io';
 
 import 'package:dart_jwt/algorithms.dart';
 import 'package:dart_jwt/jwt.dart';
+import 'package:encrypt/encrypt.dart' hide Algorithm;
 import 'package:pointycastle/pointycastle.dart' hide Algorithm;
 import 'package:test/test.dart';
+
+import '../pem_utils.dart';
 
 void main() {
   const privateKeyFile = "assets/rsa-private.pem";
@@ -21,12 +24,16 @@ void main() {
 
 PublicKey readPublicKeyFromFile(String filepath, String algorithm) {
   final file = File(filepath);
-  Uint8List bytes = PemUtils.parsePEMFile(file);
-  return PemUtils.getPublicKey(bytes, algorithm);
+  //Uint8List bytes = PemUtils.parsePEMFile(file);
+  //return PemUtils.getPublicKey(bytes, algorithm);
+  final pem = file.readAsStringSync();
+  return RSAKeyParser().parse(pem) as RSAPublicKey;
 }
 
 PrivateKey readPrivateKeyFromFile(String filepath, String algorithm) {
   final file = File(filepath);
-  Uint8List bytes = PemUtils.parsePEMFile(file);
-  return PemUtils.getPrivateKey(bytes, algorithm);
+  //Uint8List bytes = PemUtils.parsePEMFile(file);
+  //return PemUtils.getPrivateKey(bytes, algorithm);
+  final pem = file.readAsStringSync();
+  return RSAKeyParser().parse(pem) as RSAPrivateKey;
 }
