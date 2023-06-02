@@ -29,7 +29,7 @@ class CryptoHelper
   /// Throws [NoSuchAlgorithmException] if the algorithm is not supported or
   /// [InvalidKeyException] if the given key is inappropriate for initializing
   /// the specified algorithm.
-  bool verifySignatureForUsingPublicKey(
+  bool verifySignatureUsingPublicKey(
     String algorithm,
     PublicKey publicKey,
     Uint8List header,
